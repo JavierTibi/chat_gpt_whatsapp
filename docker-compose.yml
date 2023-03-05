@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  laravel:
+    image: daxter1987/laravel:1.0.8
+    container_name: chat_gpt-api
+    ports:
+      - "8060:80"
+    volumes:
+      - .:/var/www/html
+  db:
+    image: mysql:5.7
+    container_name: chat_gpt_db
+    volumes:
+      - ./db:/var/lib/mysql
+    ports:
+      - "3301:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: local
+      MYSQL_PASSWORD: local
