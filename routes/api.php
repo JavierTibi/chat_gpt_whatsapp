@@ -16,5 +16,8 @@ use App\Http\Controllers\ChatGPTController;
 */
 
 Route::group(['prefix' => 'chat_gpt'], function () {
-    Route::post('message', [ChatGPTController::class,'receiveMessage']);
+    Route::post('test_chat_gpt', [ChatGPTController::class,'testChatGPT']);
+    Route::post('message', [ChatGPTController::class,'message']);
+    Route::get('message', [ChatGPTController::class,'verifyWebhook']);
 });
+

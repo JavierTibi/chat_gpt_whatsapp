@@ -2,32 +2,32 @@
 
 namespace App\Service;
 
+use Illuminate\Support\Facades\Http;
+
 class ChatGPTService
 {
-    public function sendMessage($data){
-        $ch = curl_init(env('CHAT_GPT_URL'));
+    /**
+     * @param $data
+     * @return string
+     */
+    public static function sendMessage($data): string{
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/xml',
-            'Authorization: Bearer ' . env('CHAT_GPT_TOKEN')
-        ));
-
-        $fields = array(
+        $fields = [
             "model" => env('CHAT_GPT_MODEL'),
-            "messages" => [
+            "messages" => array([
                 "role" => "user",
-                "content"=> $data["content"]
-                ],
+                "content" => $data["content"]
+            ]),
             "user" => $data["user"],
-            "max_tokens" => env('CHAT_GPT_MAX_TOKENS'),
-        );
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+            "max_tokens" => (int) env('CHAT_GPT_MAX_TOKENS'),
+        ];
 
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . env('CHAT_GPT_TOKEN')
+        ])->post(env('CHAT_GPT_URL'), $fields);
 
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        return $response;
+        return json_decode($response->body())->choices[0]->message->content;
     }
 
 }
