@@ -70,8 +70,8 @@ class ChatGPTController
             // Check the mode and token sent are correct
             if ($mode === "subscribe" && $token === $verify_token) {
                 // Respond with 200 OK and challenge token from the request
-                echo "WEBHOOK_VERIFIED";
-                return response($challenge, 200);
+                //echo "WEBHOOK_VERIFIED";
+                return response()->json($challenge, 200);
             } else {
                 // Responds with '403 Forbidden' if verify tokens do not match
                 return response()->json(['error' => 'Forbidden'], 403);
